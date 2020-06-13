@@ -1,0 +1,37 @@
+{
+   "$schema":"http://json-schema.org/draft-07/schema",
+   "$id": "Product",
+   "type":"object",
+   "properties": {
+      "_op": {
+         "$ref": "definitions.json#/definitions/_op"
+      },
+      "name": {
+         "type":"string",
+         "minLength": 4
+      },
+      "netCost": {
+         "type":"string"
+      }      
+   },
+   "allOf": [      
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "create"} }
+         },
+         "then": {
+            "required": ["name","netCost","slug"]
+         }
+      },
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "edit"} }
+         },
+         "then": {
+            "minProperties": 2
+         }
+      }
+   ]
+   
+   
+  }

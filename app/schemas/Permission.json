@@ -1,0 +1,50 @@
+{
+   "$schema":"http://json-schema.org/draft-07/schema",
+   "$id": "http://hantyr.com/schemas/Permission.json",
+   "$comment": "The single property identifies a resource name, with dot(.) separator as you would when accessing an embedded property",
+   "type":"object",
+   "patternProperties": {
+     "_op": {
+        "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/_op"
+     },
+     "^([a-z]+)(_?([a-z]+))+$": {
+        "type":"object",
+        "properties": {
+           "create": {
+              "type":"number",
+              "enum": [0,1]
+           },
+           "add": {
+               "type":"number",
+               "enum": [0,1]
+            },
+           "read": {
+               "type":"number",
+               "enum": [0,1]
+            },
+            "edit": {
+               "type":"number",
+               "enum": [0,1]
+            },
+            "remove": {
+               "type":"number",
+               "enum": [0,1]
+            },
+            "list": {
+               "type":"number",
+               "enum": [0,1]
+            },
+            "exec": {
+               "type":"number",
+               "enum": [0,1]
+            },
+            "search": {
+               "type":"number",
+               "enum": [0,1]
+            }
+         },
+         "additionalProperties": false  
+     }
+   },
+   "additionalProperties": false
+}

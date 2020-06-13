@@ -1,0 +1,135 @@
+{
+   "$schema": "http://json-schema.org/draft-07/schema#",
+   "$id": "http://hantyr.com/schemas/definitions.json",
+   "$comment": "_op is a meta property used by the schemaValidator to conditionally use <required> based on the _op value of an object",
+   "definitions": {
+      
+      "_op" : {
+         "type":"string"
+      },
+
+      "identity": {
+         "type":"object",
+         "properties": {
+            "_op": {
+               "$ref": "#/definitions/_op"
+            },
+            "profile":{
+               "type":"string"
+            },
+            "firstname": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "middlename": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "lastname": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "dateOfBirth": {
+               "type":"string",
+               "format": "date"
+            },
+            "gender": {
+               "type": "string",
+               "enum": [
+                  "male",
+                  "female"
+               ]
+            }
+         },
+         "additionalProperties": false,
+         "required": [
+            "firstname","middlename","lastname","dateOfBirth","gender"
+         ]            
+      },
+      "credential": {
+         "_op": {
+            "$ref": "#/definitions/_op"
+         },
+         "username": {
+            "type":"string",
+            "minLength":6,
+            "maxLength":20
+         },
+         "password": {
+            "type":"string",
+            "minLength":8            
+         }
+      },
+      "userAccount":{
+         "type":"object",
+         "properties": {
+            "_op": {
+               "$ref": "#/definitions/_op"
+            },
+            "roles": {
+               "type":"array",
+               "items":{
+                  "$ref": "#/definitions/role"
+               }
+            },
+            "credential": {
+              "$ref": "#/definitions/credential"
+            }
+         }
+         
+      },
+      
+      "role": {
+         "type":"object",
+         "properties": {
+            "_op": {
+               "$ref": "#/definitions/_op"
+            },
+            "name": {
+               "type":"string",
+               "minLength": 5,
+               "maxLength": 50,
+               "pattern": "^[^\\s]+$"
+            },
+            "description": {
+               "type":"string"
+            }
+         },
+         "additionalProperties":false,
+         "if" : {
+            "properties": { "_op" : {"const": "edit"} }
+         },
+         "then": {
+            "required": []
+         },
+         "else": {
+            "required": [
+               "name"
+            ]
+         }
+      },     
+      "_metadata": {
+         "type":"object",
+         "properties": {
+            "createdBy": {
+               "type":"string"               
+            },
+            "createdOn": {
+               "type":"string"               
+            },
+            "modifiedBy": {
+               "type":"string"               
+            },
+            "modifiedOn": {
+               "type":"string"               
+            },
+            "modificationComment": {
+               "type":"string"
+            }
+         }
+      }
+   }
+}

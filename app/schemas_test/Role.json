@@ -1,0 +1,63 @@
+{
+ "$schema":"http://json-schema.org/draft-07/schema",
+ "$id": "Role",
+ "properties": {
+   "_op": {
+      "$ref": "definitions.json#/definitions/_op"
+   },
+   "_id": {
+      "type": "string"
+   },
+   "name": {
+      "type":"string",
+      "minLength": 5,
+      "maxLength": 50,
+      "pattern": "^[^\\s]+$"
+   },
+   "description": {
+      "type":"string"
+   },
+   "permissions": {
+      "type":"array",
+      "items": {
+         "$ref": "Permission.json"
+      },
+      "uniqueItems": true
+   }      
+},
+"allOf": [
+   {
+      "if" : {
+         "properties": { "_op" : {"const": "edit"} }
+      },
+      "then": {
+         "required": ["_id","name"]
+      }
+   },
+   {
+      "if" : {
+         "properties": { "_op" : {"const": "create"} }
+      },
+      "then": {
+         "required": ["name"]
+      }
+   },
+   {
+      "if" : {
+         "properties": { "_op" : {"const": "assign"} }
+      },
+      "then": {
+         "required": ["_id"]
+      }
+   },
+   {
+      "if" : {
+         "properties": { "_op" : {"const": "delete"} }
+      },
+      "then": {
+         "required": ["_id"]
+      }
+   }
+]
+   
+}

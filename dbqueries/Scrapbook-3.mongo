@@ -1,0 +1,6 @@
+db.employees.aggregate(
+{ $match: { "userAccount.credential": { $exists:true } } },
+{ $match: { "userAccount.credential.username" : "htu00001", "userAccount.credential.password":"BVx2#M4gfn"} }
+{ $project: { "userAccount.credential.password":0 } }
+ 
+)

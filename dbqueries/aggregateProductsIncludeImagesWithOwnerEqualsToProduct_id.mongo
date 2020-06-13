@@ -1,0 +1,42 @@
+db.products.aggregate([
+   {
+   $project:{
+      "_id":{
+         $toString: "$_id"
+      }
+   }},
+   {$lookup: {
+      from: "products-images.files",
+      localField: "_id",
+      foreignField: "metadata.owner",
+      as: "images "
+   }
+}
+])
+
+db.products.aggregate([
+   //add a temporary field product_id that is product._id converted to string
+   {
+      $addFields:{
+         "product_id": {
+            $convert: {
+               input: "$_id",
+               to: "string"
+            }
+         }
+      }
+   },
+   //metadata.owner = product._id string
+   { $lookup: {
+      from: "products-images.files",
+      localField: "product_id",
+      foreignField: "metadata.owner",
+      as: "images"
+   }
+},
+{ //remove product_id field
+   $project:{
+      "product_id": 0
+   }
+}
+]).pretty()

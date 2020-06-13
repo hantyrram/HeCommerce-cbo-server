@@ -1,0 +1,5 @@
+db.getCollection("products-images.files").find(
+{
+   "metadata.owner": "5df74f667548de006df96f9b"
+}
+).sort({"uploadDate":-1}).limit(1).pretty()

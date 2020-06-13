@@ -1,0 +1,35 @@
+{
+   "$schema":"http://json-schema.org/draft-07/schema",
+   "$id": "http://hantyr.com/schemas/ProductCategory.json",
+   "$comment": "Unique Index = name",
+   "properties": {
+     "_op": {
+        "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/_op"
+     },
+     "_id": {
+         "type": "string"  
+     },
+     "name": {
+         "type":"string",
+         "pattern": "^[a-zA-Z\\s]+$",
+         "minLength": 3,
+         "maxLength": 60
+     },
+      "parent": {
+         "type":"string",
+         "minLength": 3,
+         "maxLength": 60
+     }   
+  },
+  "allOf": [
+     {
+        "if" : {
+           "properties": { "_op" : {"const": "create"} }
+        },
+        "then": {
+           "required": ["name"]
+        }
+     }
+  ]
+     
+  }

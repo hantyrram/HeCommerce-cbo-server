@@ -1,0 +1,27 @@
+db.employees.aggregate([
+      {
+         $match: {
+            _id: ObjectId("5d800d142f29ff2727f33f02")
+         }
+      },
+      //perform a join op
+      {
+         "$lookup": {
+            from: "roles",
+            localField: "userAccount.roles.role_id",
+            foreignField: "_id",
+            as: "userAccount.roles"
+         }
+      },
+      {
+         $project: {
+            employeeId:1,
+            userAccount: 1
+         }
+      },
+      {
+         $replaceWith : {
+            $mergeObjects: [{_owner: "$employeeId",credential:null,roles:null},"$userAccount"]
+         }
+      }
+   ]).pretty()

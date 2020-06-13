@@ -1,0 +1,7 @@
+db.getCollection("storesettings.shipping.shippingzones").findOneAndUpdate({_id: ObjectId("5e961a37319dfa0228c55bf4")},{
+   $pull: {
+      "shippingMethods": {
+         "shippingMethodName": "LOCAL_PICKUP"
+      }
+   }
+});

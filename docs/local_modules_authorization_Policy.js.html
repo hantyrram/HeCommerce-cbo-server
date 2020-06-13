@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: local_modules/authorization/Policy.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: local_modules/authorization/Policy.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Rule = require('./Rule');
+/**
+ *@class
+ *@classdesc Contains a collection of rules.
+ */
+class Policy{
+  constructor(){
+    //Stores the Rules, unique by Rule.name
+    this.rules = [];
+  }
+
+  /**
+   * Adds a Rule to the Policy.
+   * @param {Rule} rule 
+   */
+  addRule(rule){
+    if(!(rule instanceof Rule)){
+      throw new TypeError('Argument should be of type Rule');
+    }
+    if(this.findRule(rule) !== -1){//Rule does not yet exist
+      this.rules.push(rule);
+    }
+  }
+
+  /**
+   * Removes the Rule from the Policy.
+   * @param {Rule} rule 
+   */
+  removeRule(rule){
+    if(!(rule instanceof Rule)){
+      throw new TypeError('Argument should be of type Rule');
+    }
+    let i = this.findRule(rule);
+    this.rules.splice(i,1);
+  }
+
+  /**
+   * Finds a rule.
+   * @param {Rule} rule 
+   * @return {number} - The index of the rule in this Policy's Rule collections.
+   */
+  findRule(rule){
+    let i = this.rules.findIndex((r)=>{
+      return r.name === rule.name;
+    });
+    return i;
+  }
+}
+
+module.exports = Policy;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication.html">Authentication</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-authorization.html">authorization</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li></ul><h3>Namespaces</h3><ul><li><a href="HT.html">HT</a></li><li><a href="Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#config">config</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#handleNonXHR">handleNonXHR</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication.html">Authentication</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-Authorization.html">Authorization</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li></ul><h3>Namespaces</h3><ul><li><a href="Config.middlewares.html">middlewares</a></li><li><a href="HT.html">HT</a></li><li><a href="module-Authorization-Typedefs.html">Typedefs</a></li><li><a href="Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#db">db</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getRoute">getRoute</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#handleNonXHR">handleNonXHR</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#randomStrGenerator">randomStrGenerator</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#STATUS">STATUS</a></li><li><a href="global.html#validateSchema">validateSchema</a></li></ul>
+>>>>>>> dev
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="local_modules.module_authentication.html">authentication</a></li><li><a href="local_modules.html#.module:authorization">authorization</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-HTCommerce.html">HTCommerce</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="rules.UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li></ul><h3>Namespaces</h3><ul><li><a href="helpers.html">helpers</a></li><li><a href="local_modules.html">local_modules</a></li><li><a href="middlewares.html">middlewares</a></li><li><a href="policies.html">policies</a></li><li><a href="rules.html">rules</a></li><li><a href="schemas.html">schemas</a></li><li><a href="typedefs.html">typedefs</a></li></ul><h3>Global</h3><ul><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#errorsHandlers">errorsHandlers</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getMiddlewares">getMiddlewares</a></li><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+>>>>>>> dev
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-authentication.html">authentication</a></li><li><a href="module-authorization.html">authorization</a></li><li><a href="module-htcommerce.html">htcommerce</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="rules.MustBeFromAllowedIP.html">MustBeFromAllowedIP</a></li><li><a href="rules.UserMustBeLoggedIn.html">UserMustBeLoggedIn</a></li><li><a href="rules.UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li><li><a href="Session-Cookie.html">Cookie</a></li></ul><h3>Namespaces</h3><ul><li><a href="helpers.html">helpers</a></li><li><a href="local_modules.html">local_modules</a></li><li><a href="middlewares.html">middlewares</a></li><li><a href="policies.html">policies</a></li><li><a href="rules.html">rules</a></li><li><a href="schemas.html">schemas</a></li><li><a href="typedefs.html">typedefs</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#decrypted">decrypted</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#encrypted">encrypted</a></li><li><a href="global.html#errorsHandlers">errorsHandlers</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getMiddlewares">getMiddlewares</a></li><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+>>>>>>> dev
+</nav>
+
+<br class="clear">
+
+<footer>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 21 2019 23:27:20 GMT+0300 (Arabian Standard Time)
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 20 2019 00:38:36 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 20 2019 18:12:16 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Apr 22 2019 23:38:28 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

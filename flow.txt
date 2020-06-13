@@ -1,0 +1,80 @@
+--First Visit
+user visits the site without cookies
+server checks the request, if no cookie, generates a new one C_SID
+redirect to /login
+
+--Login
+user logs in with correct credentials
+server checks the credentials from the database
+
+--Session
+  --No sid cookie
+  client: user visit the site
+  server: session checks for the sid cookie
+  server: session DID NOT Find A U_SID cookie 
+  server: session module creates new Session
+  server: session set's the http header
+  server: session module attach itself to the req object,
+          session provides a way to serializeUser 
+          session will be saved to the store upon serialization
+          
+  
+  --With valid sid cookie
+  pre: user already performed log in
+  client: user sends any request 
+  server: session checks for the sid cookie
+  server: session decrypts the sid value using the iv
+  server: session module checks the store if it has an entry of the session id
+  server: session DID found a session id entry
+  server: session attaches the sessionID to the req and req.session e.g. req.sessionID req.session.ID
+  server: session calls the deserializeUser() function,which attaches the user to the req object
+
+--Authentication (aa)
+  
+  client : user sends any request
+  server: <Session>
+  server: aa checks if there is a user on the req object
+  server: aa DID NOT find user on the req object 
+  server: aa checks the path of the req if path == failureRedirect proceed by calling next
+          aa checks the path of the req if path !== failureRedirect performs redirect to the failureRedirect 
+
+  pre: client has existing valid session 
+  client : user sends any request
+  server: <Session>
+  server: aa checks if there is a user on the req object
+  server: aa let the req proceed by calling next
+
+  scenario: user performs login
+  client : user fills up login form and sends request to /login
+  server: <Session>
+  server: aa checks if there is a user on the req object
+  server: aa DID NOT find user on the req object 
+  server: aa calls next({authenticationError:'blah blah'})
+
+
+  --logout
+  client: sends get request to /logout
+  server: aa authentication checks if there path = /logout
+
+  --Adding Roles
+  client: user clicks on Add New Role
+  client: displays Add New Role form
+  client: user fill's up role name
+  client: sends the name to the server, roles/:name/check
+  server: checks if the role :name already exist, returns nok,name already exist if :name already exist
+          returns ok, if name does not yet exist
+  client: user fill's up label,
+  client: user selects from the permission list to add permission to role 
+  client: user clicks submit 
+  server: inserts a new role to the database
+
+
+  --Generating User credentials
+    HR gives empID to IT
+    IT goes to requests/generate_credential menu, 
+    IT enters empID and clicks on generate credential,generator sends text to the employee mobile for the temporary credential
+    
+  
+
+
+

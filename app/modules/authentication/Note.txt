@@ -1,0 +1,2 @@
+authenticate/login,and already logged in must return the same object properties, 
+that is data MUST have the property user such that data.user to access the user object

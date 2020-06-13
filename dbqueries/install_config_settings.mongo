@@ -1,0 +1,37 @@
+db.getCollection("settings.store.general").updateOne({},{
+   $set : {
+      "storeName": "My Store",
+      "_temp": true
+   }},
+   {upsert: true}
+)
+
+db.getCollection("settings.store.shipping.shippingorigin").updateOne({},{
+   $set : {
+      "country": "Philippines",
+      "phlIslandGroup": "luzon",
+      "province": "PANGASINAN",
+      "municipality": "HAGONOY",
+      "zipCode": "4532",
+      "city": "Tacloban City",
+      "street": "General Emilio Jacinto",
+      "bldgHouseNo": "5692235"
+   }},{upsert : true}
+)
+
+db.getCollection("settings.store.shipping.shippingorigin").updateOne({},{
+   $set : {
+      "country": "Philippines",
+      "phlIslandGroup": "luzon",
+      "province": "PANGASINAN",
+      "municipality": "HAGONOY",
+      "zipCode": "4532",
+      "city": "Tacloban City",
+      "street": "General Emilio Jacinto",
+      "bldgHouseNo": "5692235"
+   }},{upsert : true}
+)
+
+db.getCollection("settings.store.general.currency").updateOne({},{
+   
+})

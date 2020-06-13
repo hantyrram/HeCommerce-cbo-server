@@ -1,0 +1,1 @@
+A policy is just an array of rules

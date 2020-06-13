@@ -1,0 +1,19 @@
+A service is a named function.
+A service may export a permissionNotRequired = false to indicate that the service does not require a permission to bypass authorization
+
+api.op is used as permission action name e.g. op: 'edit' means the api's action is edit.
+
+
+service naming convention
+
+
+module.exports.api
+
+[resource]  - The name of the resource.
+            - If not present, the filename is the resource e.g Employee$UserAccount_Read Employee$UserAccount is the resource name).
+            - this is to enable us to create versions of a service,
+            - if we always use filename as the resource name, we can't create files with the same name more than once.
+
+[op]        - The operation associated with the service on the resource.
+            - E.g. 'edit'
+            - If not present the last word of the file name is used after _            

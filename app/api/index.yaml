@@ -1,0 +1,127 @@
+swagger: "2.0"
+info: 
+  title: PSGC Api
+  description: Api for retrieving the Philippine Standard Geographic Codes
+  termsOfService: http://dev.hantyr.com/psgc/terms
+  contact:
+    name: API Support
+    url: http://dev.hantyr.com/support
+    email: rongrammer@hotmail.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.1
+paths: 
+  /apis:
+    summary: Retrieve api list
+    x-serviceProvider: ApiService
+    x-serviceProviderOp: list
+    x-middlewares:
+      - schemaValidator
+    x-schemaValidator:
+      op : read
+    x-authorization:
+      op: read         
+  /auth/authenticate:
+    post:
+      summary: Authenticates a U_SID
+      description: Authenticates using an existing session id      
+      parameters:
+        - in : cookie
+          name: U_SID
+          schema:   
+            type: string
+      x-serviceProvider: AuthService
+      x-serviceProviderOp: authenticate
+      x-authorization:
+        op: exec
+  /auth/login: 
+    post:
+      summary: Logins a User
+      description: "Logins an existing User. Session ID (U_SID) is set during on successful login, this
+                    must be set on subsequent requests on paths that require authentication"      
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema: 
+              $ref: ../schemas_test/Credential.json
+      headers:
+        Set-Cookie:
+          schema:
+            type: string
+            example: U_SID=abckj2389fdah28923298429923bfjhfds
+      x-serviceProvider: AuthService
+      x-serviceProviderOp: login
+      x-authorization:
+        op: exec
+  /auth/logout:
+    get:
+      summary: Logouts a User
+      x-serviceProvider: AuthService
+      x-serviceProviderOp: login
+      x-authorization:
+        op: exec
+  /employees:
+    get:
+      summary: Retrieves the Employees
+      parameters:
+      - in : cookie
+        name: U_SID
+        schema:   
+          type: string
+      # add - in : query for filters
+      response:
+        200:
+          description: OK
+          content:
+            application/json: 
+              schema: 
+                $ref: '#/components/Response'                
+      x-serviceProvider: EmployeeService
+      x-serviceProviderOp: list
+      x-authorization:
+        resource: Employee
+        op: read
+    post:
+      summary: Adds a new Employee
+      requestBody:
+        required: true
+        application/json:
+          schema:
+            $ref: ../schemas_test/Employee.json
+components:
+  Response:
+    type: object
+    properties:
+      oneOf: 
+        - ok : 1
+          # description: Presence means a successful operation
+        - nok: 1
+          # description: Presence means an unsuccessful operation
+      resource:
+        schema:
+          type: object
+      resourceType:
+        required: true
+        description: The type of the resource returned, 
+        schema: 
+          type: string
+        examples: 
+          - Array: An Array of Resource
+          - ResourceName: The actual name of the resource if it's a single resource        
+      resourceItemType: 
+        
+
+          
+
+
+
+      
+        
+  
+
+
+   
+
+  

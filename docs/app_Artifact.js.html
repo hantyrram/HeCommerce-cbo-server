@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/Artifact.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/Artifact.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Used when a service operation succeeded and without warning.
+ * @memberof Artifact.ArtifactMessage
+ * @static
+ * @const
+ */
+const SUCCESS = 'success';
+/**
+ * Used when a service operation succeeded and without warning.
+ * @memberof Artifact.ArtifactMessage
+ * @static
+ * @const
+ */
+const INFO = 'info';
+/**
+ * Used when a service operation failed.
+ * @memberof Artifact.ArtifactMessage
+ * @static
+ * @const
+ */
+const ERROR = 'error';
+
+/**
+ * Used when a service operation succeeded but there is warning.
+ * @memberof Artifact.ArtifactMessage
+ * @static
+ * @const
+ */
+const WARNING = 'warning';
+/**
+ * The message object used in creating Artifacts.
+ * @memberof Artifact
+ * @static
+ * 
+ */
+class ArtifactMessage{
+ constructor(type,text){
+  if(!type || !text || ![ERROR,SUCCESS,INFO,WARNING].includes(type)){
+   throw new Error('@Artifact.Message : Invalid message type or text');
+  }
+  this.type = type;
+  this.text = text;
+ }
+}
+
+/**
+ * The Artifact Error object used in creating Artifacts.
+ * @memberof Artifact
+ * @static
+ * 
+ */
+class ArtifactError{
+ constructor(type,text){
+  if(!type || !text){
+   throw new Error('@Artifact.Error : Invalid type or text');
+  }
+<<<<<<< HEAD
+ }
+}
+
+=======
+  this.type = type;
+  this.text = text;
+ }
+}
+
+Object.defineProperty(ArtifactMessage,'INFO',{value: INFO,writable:false,configurable:false});
+>>>>>>> dev
+Object.defineProperty(ArtifactMessage,'SUCCESS',{value: SUCCESS,writable:false,configurable:false});
+Object.defineProperty(ArtifactMessage,'ERROR',{value: ERROR,writable:false,configurable:false});
+Object.defineProperty(ArtifactMessage,'WARNING',{value: WARNING,writable:false,configurable:false});
+
+/**
+ * @inner 
+ * @enum
+ */
+const STATUS = {
+ ok : 'ok',
+ nok: 'nok'
+}
+
+/*
+ * @typedef {Object} Artifact~error
+ * @property {string} type - A string representing the specific error.
+ * @property {string} message - The error message.
+ */
+
+/**
+ * The standard object sent by a service as a response. All service sends artifact.
+ * 
+ * @constructor
+ * 
+ * @param {string} status - The status of the operation, values can only be either 'ok' or 'nok'. If value is 'ok' it
+ * means the intended operation has succeed. If 'nok' the operation failed.
+ * @param {string} source - The name of the service that generated this Artifact.
+ * @param {Artifact~error | Object | null} third - If status = 'nok' then the third param should be a {@link Artifact~error}.
+ * If status = 'ok', the service may provide some data as a result of completing the operation. E.g. a service that 
+ * adds a particular entity may need to return the saved entity updated with ._id property to the client. This
+ * can be done by putting the entity as a property of artifact.data (example: artifact.data = {entity: entityWithId}).
+ * If status = 'nok' Artifact instance will have the error property, if status = 'ok' Artifact instance will have
+ * the data property.
+ *  @param {string} [message = ''] - An optional message.
+ */
+class Artifact{
+ constructor(status,source,third,message = ''){
+<<<<<<< HEAD
+  if(!(status in STATUS)) throw new Error('Invalid status, values can only be either ok or nok');
+=======
+  if(!(['ok','nok'].includes(status))) throw new Error('Invalid status, values can only be either ok or nok');
+  console.log(typeof source);
+  console.log(typeof third);
+>>>>>>> dev
+  if(typeof source !== 'string') throw new Error('Invalid source');
+  if(typeof third !== 'object') throw new Error('Invalid data or error provided');
+  if(status === 'nok'){
+   //third MUST be an Artifact~error
+<<<<<<< HEAD
+  if( !(third instanceof ArtifactError))
+   //allow if third has the same prototype as ArtifactError
+   if(!third['type'] || !third['message']){
+    throw new Error('Invalid third parameter. MUST be of type ArtifactError');
+   }
+   
+=======
+   if(!third['type'] || !third['text']){ //ArtifactError
+    throw new Error('Invalid third parameter. MUST be of type ArtifactError');
+   }
+   //allow if third has the same prototype as ArtifactError
+>>>>>>> dev
+  }
+  this.status = status;
+  this.source = source;
+  this[status === 'nok' ?'error':'data'] = third;
+  this.message = message;
+ }
+}
+
+<<<<<<< HEAD
+Object.defineProperty(Artifact,'ArtifactMessage',{value:ArtifactMessage,writable:false,configurable:false});
+Object.defineProperty(Artifact,'ArtifactError',{value:ArtifactError,writable:false,configurable:false});
+=======
+Object.defineProperty(Artifact,'Message',{value:ArtifactMessage,writable:false,configurable:false});
+Object.defineProperty(Artifact,'Error',{value:ArtifactError,writable:false,configurable:false});
+>>>>>>> dev
+Object.defineProperty(Artifact,'OK',{value:'ok',writable:false,configurable:false});
+Object.defineProperty(Artifact,'NOK',{value:'nok',writable:false,configurable:false});
+
+module.exports = Artifact;
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication.html">Authentication</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-authorization.html">authorization</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li></ul><h3>Namespaces</h3><ul><li><a href="HT.html">HT</a></li><li><a href="Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#config">config</a></li><li><a href="global.html#db">db</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#handleNonXHR">handleNonXHR</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication.html">Authentication</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-Authorization.html">Authorization</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li></ul><h3>Namespaces</h3><ul><li><a href="Config.middlewares.html">middlewares</a></li><li><a href="HT.html">HT</a></li><li><a href="module-Authorization-Typedefs.html">Typedefs</a></li><li><a href="Services.html">Services</a></li></ul><h3>Global</h3><ul><li><a href="global.html#db">db</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getRoute">getRoute</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#handleNonXHR">handleNonXHR</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#randomStrGenerator">randomStrGenerator</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#start">start</a></li><li><a href="global.html#STATUS">STATUS</a></li><li><a href="global.html#validateSchema">validateSchema</a></li></ul>
+>>>>>>> dev
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="local_modules.module_authentication.html">authentication</a></li><li><a href="local_modules.html#.module:authorization">authorization</a></li><li><a href="module-Authentication_authenticate.html">Authentication/authenticate</a></li><li><a href="module-Authentication_login.html">Authentication/login</a></li><li><a href="module-Authentication_logout.html">Authentication/logout</a></li><li><a href="module-HTCommerce.html">HTCommerce</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li><li><a href="module-session-on-redis_sessionCipher.html">session-on-redis/sessionCipher</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="rules.UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li></ul><h3>Namespaces</h3><ul><li><a href="helpers.html">helpers</a></li><li><a href="local_modules.html">local_modules</a></li><li><a href="middlewares.html">middlewares</a></li><li><a href="policies.html">policies</a></li><li><a href="rules.html">rules</a></li><li><a href="schemas.html">schemas</a></li><li><a href="typedefs.html">typedefs</a></li></ul><h3>Global</h3><ul><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#errorsHandlers">errorsHandlers</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getMiddlewares">getMiddlewares</a></li><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+>>>>>>> dev
+=======
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-authentication.html">authentication</a></li><li><a href="module-authorization.html">authorization</a></li><li><a href="module-htcommerce.html">htcommerce</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="rules.MustBeFromAllowedIP.html">MustBeFromAllowedIP</a></li><li><a href="rules.UserMustBeLoggedIn.html">UserMustBeLoggedIn</a></li><li><a href="rules.UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li><li><a href="Session-Cookie.html">Cookie</a></li></ul><h3>Namespaces</h3><ul><li><a href="helpers.html">helpers</a></li><li><a href="local_modules.html">local_modules</a></li><li><a href="middlewares.html">middlewares</a></li><li><a href="policies.html">policies</a></li><li><a href="rules.html">rules</a></li><li><a href="schemas.html">schemas</a></li><li><a href="typedefs.html">typedefs</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#decrypted">decrypted</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#encrypted">encrypted</a></li><li><a href="global.html#errorsHandlers">errorsHandlers</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getMiddlewares">getMiddlewares</a></li><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+>>>>>>> dev
+</nav>
+
+<br class="clear">
+
+<footer>
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Thu Mar 21 2019 23:27:20 GMT+0300 (Arabian Standard Time)
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 20 2019 00:38:36 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Apr 20 2019 18:12:16 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+=======
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Apr 22 2019 23:38:28 GMT+0300 (Arabian Standard Time)
+>>>>>>> dev
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

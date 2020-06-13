@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: app/middlewares/validateSchema.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: app/middlewares/validateSchema.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const Ajv = require('ajv');
+const {routes,ERRORS} = require('../config');
+const {getRoute} = require('../helpers');
+
+/**
+ * Provides a user-friendly message, for pattern schema violation.
+ * @hidden
+ */
+const PATTERNS = {
+ "^[^\\s]+$" : 'Must Not Contain Space!'
+}
+
+
+
+/**
+ * @memberof middlewares
+ * @type {typedefs~middleware}
+ * @function validateSchema
+ * @desc A route specific middleware. This middleware can be added on each Route that requires Schema
+ * validation. This middleware uses schemas in the /app/schemas.
+ * 
+ * 
+ */
+module.exports = validateSchema = (req,res,next)=>{
+  let route = getRoute(routes,req);
+  //check required properties
+  const { validateSchema } = route;
+  
+  if(!validateSchema || !validateSchema.schema){
+   let error = new Artifact.Error(ERRORS.SERVER_ERROR_SCHEMA_NOT_FOUND_ON_ROUTE,'Please contact Administrator!');
+   let artifact = new Artifact(Artifact.NOK,'M_validate_schema',error);
+   next(artifact);
+  }
+
+  const { schema: SCHEMA_NAME, requireId, generateEntity } = validateSchema;
+
+  let jsonSchema = require(`../schemas/${SCHEMA_NAME}.json`);
+  
+  if(requireId){
+   if(!jsonSchema.required){
+    jsonSchema.required = [];
+   }
+   //??? ADD AS APP CONFIG, allow user to decide label of id e.g. _id, ID, userID
+   !jsonSchema.required.includes('_id')? jsonSchema.required.push("_id"): null; 
+  }
+
+  let ajv = new Ajv();
+  let validate = ajv.compile(jsonSchema);
+  let valid = validate(req.body);
+  if(!valid){
+   let error = new Artifact.Error(ERRORS.VALIDATION_ERROR,`Validation Failed! ${SCHEMA_NAME} ${validate.errors[0].message}`);
+   if(validate.errors[0].params.pattern){//pattern failure
+    let txt = PATTERNS[validate.errors[0].params.pattern] || '';
+    error = new Artifact.Error(ERRORS.VALIDATION_ERROR,`Validation Failed! ${SCHEMA_NAME} ${txt}`);
+   }
+   let artifact = new Artifact(Artifact.NOK,'M_validate_schema',error);
+   next(artifact);
+   return;
+  }
+
+  //???
+  //** if generateEntity, generate an entity based on schema attach it to the req as req.validated.user we can't make sure to namespace so we don't pollute the req */
+  // if(generateEntity){
+  //  let entity = Object.assign({},jsonSchema.properties);
+  //  entity = Object.assign(entity,req.body);
+  //  console.log(entity);
+  // }
+ 
+  //signifies that the req.body has undergone schema validation
+  req.schemaValidationDone = true; 
+  //the schema used during validation
+  req.schemaValidationSchema = jsonSchema;
+  next();
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-authentication.html">authentication</a></li><li><a href="module-authorization.html">authorization</a></li><li><a href="module-htcommerce.html">htcommerce</a></li><li><a href="module-session-on-redis.html">session-on-redis</a></li></ul><h3>Classes</h3><ul><li><a href="Artifact.html">Artifact</a></li><li><a href="Artifact.ArtifactError.html">ArtifactError</a></li><li><a href="Artifact.ArtifactMessage.html">ArtifactMessage</a></li><li><a href="Policy.html">Policy</a></li><li><a href="PolicyViolation.html">PolicyViolation</a></li><li><a href="Rule.html">Rule</a></li><li><a href="rules.MustBeFromAllowedIP.html">MustBeFromAllowedIP</a></li><li><a href="rules.UserMustBeLoggedIn.html">UserMustBeLoggedIn</a></li><li><a href="rules.UserMustHaveValidPermission.html">UserMustHaveValidPermission</a></li><li><a href="Session-Cookie.html">Cookie</a></li></ul><h3>Namespaces</h3><ul><li><a href="helpers.html">helpers</a></li><li><a href="local_modules.html">local_modules</a></li><li><a href="middlewares.html">middlewares</a></li><li><a href="policies.html">policies</a></li><li><a href="rules.html">rules</a></li><li><a href="schemas.html">schemas</a></li><li><a href="typedefs.html">typedefs</a></li></ul><h3>Global</h3><ul><li><a href="global.html#decrypt">decrypt</a></li><li><a href="global.html#decrypted">decrypted</a></li><li><a href="global.html#destroy">destroy</a></li><li><a href="global.html#encrypt">encrypt</a></li><li><a href="global.html#encrypted">encrypted</a></li><li><a href="global.html#errorsHandlers">errorsHandlers</a></li><li><a href="global.html#genuuidV4">genuuidV4</a></li><li><a href="global.html#get">get</a></li><li><a href="global.html#getMiddleware">getMiddleware</a></li><li><a href="global.html#getMiddlewares">getMiddlewares</a></li><li><a href="global.html#getRoutes">getRoutes</a></li><li><a href="global.html#getServices">getServices</a></li><li><a href="global.html#PATTERNS">PATTERNS</a></li><li><a href="global.html#prefixPath">prefixPath</a></li><li><a href="global.html#set">set</a></li><li><a href="global.html#STATUS">STATUS</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Mon Apr 22 2019 23:38:28 GMT+0300 (Arabian Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

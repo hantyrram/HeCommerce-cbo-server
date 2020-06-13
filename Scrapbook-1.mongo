@@ -1,0 +1,6 @@
+db.getCollection("settings.store.general").updateOne({},{
+   $set : {
+      "storeName": "My Store",
+      "_temp": true
+   }
+})

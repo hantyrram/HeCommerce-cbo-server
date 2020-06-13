@@ -1,0 +1,2 @@
+//A middleware MUST have a name, such that, getting the property middleware.name = the name of the middleware
+//this is important during the booth process

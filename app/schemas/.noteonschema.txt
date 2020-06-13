@@ -1,0 +1,15 @@
+The $id is just a string identifier, it will not  be used to download the schema,
+
+The $id will be the base URI when referencing it. 
+   e.g. if external.json's $id = "external", and it contains a definition
+      definition: {
+         type: object
+         something: {
+            type: string
+         }
+      }
+you may reference "something" on other json as $ref: "external#/definition/something"
+
+you must add definition ajv.addSchema(definition) first before creating a validator using ajv.compile(<the subject>)
+
+validator = ajv.addSchema(definition).compile(subject); where subject is the object to be validated

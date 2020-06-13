@@ -1,0 +1,16 @@
+
+
+db.employees.find({
+   "$and": [
+      {
+         "userAccount.credential.username": {
+            "$exists": true
+         }
+      },
+      {
+         "userAccount.credential.username": {
+            "$regex": '^htu'
+         }
+      }
+   ]
+})

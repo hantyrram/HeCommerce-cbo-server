@@ -1,0 +1,2 @@
+
+Error handlers must be placed here, and registered on the errorHandlers config in order for it to be loaded by the app.

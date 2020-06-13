@@ -1,0 +1,7 @@
+product categories max depth = <number>
+   --The maximum depth of Product Categories, suggested = 3
+   -- example Women's Clothing, Tops, Tshirt
+EmployeeId Format = <regexp>
+   -- example: /ht[0-9]+/
+
+   

@@ -1,0 +1,49 @@
+{
+   "$schema":"http://json-schema.org/draft-07/schema",
+   "$id": "http://hantyr.com/schemas/ShippingZone.json",
+   "$comment":"Supported country is Philippines",
+   "type":"object",
+   "properties": {
+      "_op": {
+         "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/_op"
+      },
+      "zoneName":{
+         "type":"string",
+         "minLength": 3,
+         "maxLength": 30
+      },
+      "regionType":{
+         "type":"string",
+         "enum":["country","province","phlIslandGroup"]
+      }
+   },
+   "allOf": [
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "add"} }
+         },
+         "then": {
+            "required": ["zoneName","regionType"]
+         }
+      },
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "edit"} }
+         },
+         "then": {
+            "required": ["zoneName"]
+         }
+      },
+      {
+         "if" : {
+            "properties": { "regionType" : {"const": "country"} }
+         },
+         "then": {
+            "properties": { "region" : { "const": "Philippines"} }
+         }
+      }
+      
+   ]
+   
+   
+  }

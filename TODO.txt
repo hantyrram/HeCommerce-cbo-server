@@ -1,0 +1,2 @@
+Note We copied hantyr db to hanty_cbo (cbo means commerce back office),once tested we can delete the hantyr db
+catch error when universal tutorial is not available
