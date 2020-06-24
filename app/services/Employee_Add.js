@@ -2,7 +2,8 @@
 const {dependencies} = require(`${global.APP_ROOT}/dependencyManager`);
 
 const EMP_ID_PREFIX = "100";//company 1,company 2 = 200
-const GENESIS = 1000;//should not be assigned to anyone
+// const GENESIS = 1000;//should not be assigned to anyone
+const GENESIS = "_genesis_";
 const START = 1001;//first employee
 /**
  * @type {HT~service}
@@ -10,13 +11,14 @@ const START = 1001;//first employee
  * @memberof Services
  * @desc Creates a new Employee Profile
  */
-module.exports = employee_add = async (req,res,next)=>{ 
+module.exports = async (req,res,next)=>{ 
    
    let {db} = dependencies;
    
    let employeeId;
-   //get last
-   let cursor = await db.collection('employees').find({}).sort({ employeeId:-1 }).limit(1);
+   //get the last employeeId skip on GENESIS
+   let cursor = await db.collection('employees').find({employeeId: {$ne: GENESIS}}).sort({ employeeId:-1 }).limit(1);
+   console.log(cursor.hasNext())
    if(! (await cursor.hasNext())){
     employeeId = `${EMP_ID_PREFIX}${START}`; //First employee
    }else{
@@ -27,53 +29,37 @@ module.exports = employee_add = async (req,res,next)=>{
    
    try {
   
-    let QUERY = { employeeId: employeeId };
   
-    let UPDATE = {
-  
-     $currentDate: {
-        "_metadata.createdOn": {$type: "timestamp"} 
-     },
-  
-     $setOnInsert: {
-        ...req.body,
-     }
-    }
-  
-    let OPTIONS = {
-     upsert: true
-    }
-  
-    let result = await db.collection('employees').updateOne(QUERY,UPDATE,OPTIONS);
-    let { matchedCount } = result;
-    if(matchedCount > 0){ // username is already on db
-     res.json(
-        { 
-              error: {
-                 type: 'DUPLICATE_KEY_VIOLATION',
-                 text: 'Employee ID is already issued!'
-           } 
-        } 
-     )
-     return;
-    }
-  
-     let data = {
-        resource: {
-           _id: result.upsertedId._id, 
-        }
-     };
+    let findAndModifyWriteOpResultObject = await db.collection('employees').findOneAndUpdate(
+       {
+         employeeId: employeeId
+       },
+       {
+         $currentDate: {
+            "_metadata.createdOn": {$type: "timestamp"} 
+         },
+      
+         $setOnInsert: {
+            ...req.body,
+         }
+       },
+       {
+          upsert: true,
+          returnOriginal: false // return upserted
+       }
+
+    );
     
-     console.log('Base URL',req.app);
-     let artifact = {
-        ok: 1,
-        href: req.hostname + '/apiv1/employees/' + data.resource._id,
-        code: 201
-  
-     };
-     res.json({
+    let { value, ok, lastErrorObject } = findAndModifyWriteOpResultObject;
+
+    console.log(value);
+     
+     res.status(201).json({
         ok:1,
-        resource
+        resource: value,
+        links: {
+           view: `/team/employees/${value._id}/view`,           
+        }
      });
    } catch (error) {
     console.log(error);

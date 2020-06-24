@@ -103,8 +103,7 @@
             "properties": { "_op" : {"const": "create"} }
          },
          "then": {
-            "required": ["identity","country",
-               "city","joiningDate","jobTitle","designation","department","mobileNo"]
+            "required": ["identity"]
          }
          
       }
