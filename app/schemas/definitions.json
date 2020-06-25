@@ -130,6 +130,44 @@
                "type":"string"
             }
          }
+      },
+      "address":{
+         "type":"object",
+         "properties": {
+            "country":{
+               "type":"string"
+            },
+            "province": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "city": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "street": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "bldgNo": {
+               "type":"string",
+               "minLength":3,
+               "maxLength": 50
+            },
+            "zipcode":{
+               "type":"string",
+               "minLength":3,
+               "maxLength": 11
+            }
+         },
+         "additionalProperties": true,
+         "required": [
+            "country","street","city","zipcode","province"
+         ]            
       }
+      
    }
 }

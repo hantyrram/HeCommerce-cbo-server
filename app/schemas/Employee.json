@@ -3,6 +3,7 @@
    "$id": "http://hantyr.com/schemas/Employee.json",
    "$comment": "_op is a meta property used by the schemaValidator to conditionally use <required> based on the _op value of an object",
    "type":"object",
+   
    "properties": {           
       "_op": {
          "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/_op"
@@ -18,45 +19,69 @@
       "identity": {
          "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/identity"
       },      
+      "address": {
+         "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/address"
+      },
+      "contactInfo":{
+         "type":"object",
+         "properties": {
+            "mobileNo":{
+               "type":"string"
+            },
+            "email":{
+               "type":"string",
+               "format": "email"
+            },
+            "companyMobileNo":{
+               "type":"string"
+            },
+            "companyEmail":{
+               "type":"string",
+               "format": "email"
+            }
+         },
+         "additionalProperties": false,
+         "required":["mobileNo"]
+      },
+      "employmentInfo": {
+         "type":"object",       
+         "properties": {
+            "joiningDate": {
+               "type":"string",
+               "format": "date"
+            },
+            "jobTitle":{
+               "type":"string"
+            },      
+            "designation":{
+               "type":"string"
+            },      
+            "department":{
+               "type":"string"
+            },
+            "status":{
+               "enum": [
+                  "active","onleave","resigned"
+               ]
+            },
+            "sssNo": {
+               "type":"string"
+            },
+            "pagibigNo": {
+               "type":"string"
+            },
+            "tinNo":{
+               "type":"string"
+            }
+         },
+         "additionalProperties": false
+      },
+
       "userAccount": {
          "$ref": "http://hantyr.com/schemas/definitions.json#/definitions/userAccount"
       },
-      "country":{
-         "type":"string"
-      },      
-      "city":{
-         "type":"string"
-      },      
-      "address":{
-         "type":"string"
-      },      
-      "zipcode":{
-         "type":"string"
-      },      
-      "joiningDate": {
-         "type":"string",
-         "format": "date"
-      },
-      "jobTitle":{
-         "type":"string"
-      },      
-      "designation":{
-         "type":"string"
-      },      
-      "department":{
-         "type":"string"
-      },      
-      "sssNo": {
-         "type":"string"
-      },
-
-      "pagibigNo": {
-         "type":"string"
-      },
-
-      "tinNo":{
-         "type":"string"
-      },
+          
+      
       "mobileNo":{
          "type":"string"
       },
@@ -83,8 +108,7 @@
             "properties": { "_op" : {"const": "edit"} }
          },
          "then": {
-            "required": ["_id","employeeId","identity","country",
-               "city","joiningDate","jobTitle","designation","department","mobileNo"]
+            "required": ["_id"]
          }
          
       },
