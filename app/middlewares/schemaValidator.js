@@ -20,6 +20,7 @@ const ProductCategory = require(path.resolve(SCHEMAS_PATH,'ProductCategory.json'
 const Product = require(path.resolve(SCHEMAS_PATH,'Product.json'));
 const ShippingZone = require(path.resolve(SCHEMAS_PATH,'ShippingZone.json'));
 const ShippingMethod = require(path.resolve(SCHEMAS_PATH,'ShippingMethod.json'));
+const CredentialGenerate = require(path.resolve(SCHEMAS_PATH,'CredentialGenerate.json'));
 
 const schemas = [];//so that we can easily reference which schema to compile based on the schema defined on the api.
 schemas['definitions'] = definitions;
@@ -32,6 +33,7 @@ schemas['ProductCategory'] = ProductCategory;
 schemas['Product'] = Product;
 schemas['ShippingZone'] = ShippingZone;
 schemas['ShippingMethod'] = ShippingMethod;
+schemas['CredentialGenerate'] = CredentialGenerate;
 
 /**
  * @memberof middlewares

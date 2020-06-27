@@ -41,6 +41,9 @@
             "search": {
                "type":"number",
                "enum": [0,1]
+            },
+            "assign": {
+               "type":"boolean"
             }
          },
          "additionalProperties": false  

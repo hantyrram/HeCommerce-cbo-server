@@ -8,6 +8,7 @@ const Permissions = require('./Permissions.json');
 const ProductCategory = require('./ProductCategory.json');
 const Product = require('./Product.json');
 const ShippingMethod = require('./ShippingMethod');
+const CredentialGenerate = require('./CredentialGenerate');
 
 module.exports = {
    definitions,
@@ -18,5 +19,6 @@ module.exports = {
    Credential,
    ProductCategory,
    Product,
-   ShippingMethod
+   ShippingMethod,
+   CredentialGenerate
 }

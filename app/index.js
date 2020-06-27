@@ -77,14 +77,14 @@ server.use((req,res,next)=>{
 /**
  * Server Middleware. Setup server log.
  */
-server.use((req,res,next)=>{
-   fs.appendFile(path.resolve(__dirname,'logs/server.log'),`${new Date} [CLIENT CONNECTED] : IP=${req.ip} ${os.EOL}`,(err)=>{
-      if(err){
-         console.log(chalk.yellow(`${new Date} : [SERVER LOGGING] Error on Server Log Middleware ${os.EOL}` ));
-      }
-   });
-   next();
-});
+// server.use((req,res,next)=>{
+//    fs.appendFile(path.resolve(__dirname,'logs/server.log'),`${new Date} [CLIENT CONNECTED] : IP=${req.ip} ${os.EOL}`,(err)=>{
+//       if(err){
+//          console.log(chalk.yellow(`${new Date} : [SERVER LOGGING] Error on Server Log Middleware ${os.EOL}` ));
+//       }
+//    });
+//    next();
+// });
 
 /**
  * Use app

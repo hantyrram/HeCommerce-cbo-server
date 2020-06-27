@@ -28,7 +28,7 @@ module.exports = employee_verify = async (req,res,next)=>{
       )
 
      if(!employee){
-        res.json({
+        res.status(404).json({
            error: {
               type: 'EMPLOYEE_VERIFICATION_NOK',
               text: 'Employee Id Does Not Exist.'

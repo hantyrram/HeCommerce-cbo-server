@@ -46,6 +46,9 @@ const Util$ExtData$Country_List = require('./Util$ExtData$Country_List');
 const Util$ExtData$CountryState_List = require('./Util$ExtData$CountryState_List');
 const Util$ExtData$CountryCity_List = require('./Util$ExtData$CountryCity_List');
 const UserAccount_List = require('./UserAccount_List');
+const UserAccount$Credential$Generate_Exec = require('./UserAccount$Credential$Generate_Exec');
+const UserAccount$Credential_Create = require('./UserAccount$Credential_Create');
+const UserAccount$Roles_Add = require('./UserAccount$Roles_Add');
 const StoreSetting_List = require('./StoreSetting_List');
 const StoreSetting$Shipping$ShippingZone_Add = require('./StoreSetting$Shipping$ShippingZone_Add');
 const Util$ExtData$PSGC_Read = require('./Util$ExtData$PSGC_Read');
@@ -107,6 +110,9 @@ module.exports = [
    Util$ExtData$CountryState_List,
    Util$ExtData$CountryCity_List,
    UserAccount_List,
+   UserAccount$Credential$Generate_Exec,
+   UserAccount$Credential_Create,
+   UserAccount$Roles_Add,
    StoreSetting$Shipping$ShippingZone_Add,
    StoreSetting$Shipping$ShippingZone_Edit,
    StoreSetting$Shipping$ShippingZone_List,
