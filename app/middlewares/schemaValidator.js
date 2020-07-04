@@ -67,7 +67,12 @@ module.exports = schemaValidator = (req,res,next)=>{
       let valid = validate(entity);
       console.log('@schemaValidator:66',validate.errors);
       if(!valid){        
-         res.status(400).json({ error: { type: 'VALIDATION_ERROR', text: JSON.stringify(validate.errors) }});
+         let err = validate.errors[0];
+         let text = 'Validation Failed';
+         if(err){
+            text =`${err.dataPath.replace('.','')} ${err.message}` ;
+         }
+         res.status(400).json({ error: { type: 'VALIDATION_ERROR', text: text }});
          return;
       }
    }
