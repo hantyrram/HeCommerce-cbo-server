@@ -8,13 +8,19 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const chalk = require('chalk');
+const SwaggerParser = require("@apidevtools/swagger-parser")
 const sessionOnRedis = require('./modules/session-on-redis');
 const cookieParser = require('cookie-parser');
 const dependencyManager = require('./dependencyManager');
 const server = express();
 const app = express();
 const PORT = process.env.PORT || 8080;
-console.log(process.env);
+
+const parser = new SwaggerParser();
+(async function(){
+   const api = await parser.dereference(path.join(__dirname,'defs/api.yaml'));
+   console.dir(api);
+})()
 
 const __defineGlobals = require('./__defineGlobals');
 __defineGlobals();
@@ -66,7 +72,7 @@ let clear = setInterval(function(){
 server.use((req,res,next)=>{
    if(!dependencyManager.isReady()){
       console.log('@app/index:61 Request recieved while dependencies aren\'r ready');
-      res.status(500).json({type:'SERVER_ERROR',text:'Please try again later!'});
+      res.status(200).json({type:'MAINTENANCE_MODE',text:'sorry, site under maintenance please try again later!'});
       return;
    }
    // start(app);

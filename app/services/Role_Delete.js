@@ -15,12 +15,12 @@ module.exports = role_delete = async (req,res,next)=>{
    try {
       
       let {result,deletedCount} = await db.collection('roles').deleteOne({
-         _id: ObjectId(req.preLoadedResource['Role']._id)
+         _id: ObjectId(req.params.role)
       })
 
       res.json({
          ok: 1,
-         resource: req.preLoadedResource['Role'],
+         resource: { _id: req.params.role},
          resourceType: 'Role',
          message: {
             type: 'OP_SUCCESS',
@@ -47,7 +47,7 @@ module.exports = role_delete = async (req,res,next)=>{
 
 
 module.exports.api = {
-   path : 'admin/roles/:role',
+   path : 'roles/:role',
    method: 'delete',
    resource: 'Role',
    op: 'delete',

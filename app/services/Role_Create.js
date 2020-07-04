@@ -34,7 +34,7 @@ module.exports = role_create = async (req,res,next)=>{
 
 
 module.exports.api = {
-   path : 'admin/roles',
+   path : 'roles',
    method: 'post',
    resource: 'Role',
    op: 'create',

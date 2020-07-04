@@ -11,10 +11,10 @@ const SwaggerParser = require('@apidevtools/swagger-parser');
 
 const PORT = 9090;
 
+const parser = new SwaggerParser();
 (async function(){
-   const parser = new SwaggerParser();
-   let spec =  await parser.bundle(path.join(__dirname,'app/api/index.yaml'));
-   console.dir(spec);
+   const api = await parser.dereference(path.join(__dirname,'app/defs/api.yaml'));
+   console.dir(api,{depth: 15});
 })()
 
 /**

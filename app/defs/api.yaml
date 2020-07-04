@@ -45,7 +45,7 @@ paths:
         content: 
           application/json:
             schema: 
-              $ref: ../schemas_test/Credential.json
+              $ref: schemas/Credential.json
       headers:
         Set-Cookie:
           schema:
@@ -89,7 +89,31 @@ paths:
         required: true
         application/json:
           schema:
-            $ref: ../schemas_test/Employee.json
+            $ref: schemas/Employee.json
+  /employees/:_id:
+    patch:
+      summary: Updates an Employee
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: schemas/Employee.json
+    get:
+      summary: Retrieves the Employee with the given _id
+      parameters:
+       -in: path
+       name: _id
+       required: true
+       description: _id of the Employee
+  /employees/:_id/photo
+    post:
+      summary: Upload a photo of an Employee
+      requestBody:
+        required: true
+        content:
+          image/png:
+            
 components:
   Response:
     type: object
@@ -110,7 +134,9 @@ components:
         examples: 
           - Array: An Array of Resource
           - ResourceName: The actual name of the resource if it's a single resource        
-      resourceItemType: 
+      resourceItemType: #the Resource type if resourceType is a List or An
+        schema:
+          type: string
         
 
           
