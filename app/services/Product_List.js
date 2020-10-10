@@ -4,35 +4,48 @@ module.exports = product_list = async (req,res,next)=>{
    let {db} = dependencies;
    try {
       // let products = await db.collection('products').find({}).toArray();  
-      let cursor = await db.collection('products').aggregate([
-         {
-            $addFields:{
-               "product_id": {
-                  $convert: {
-                     input: "$_id",
-                     to: "string"
-                  }
-               }
-            }
-         },
-         //metadata.owner = product._id string
-         { 
-            $lookup: {
-               from: "products-images.files",
-               localField: "product_id",
-               foreignField: "metadata.owner",
-               as: "images"
-            }
-         },
-         { //remove product_id field
-            $project:{
-               "product_id": 0
+      // let cursor = await db.collection('products').aggregate([
+      //    {
+      //       $addFields:{
+      //          "product_id": {
+      //             $convert: {
+      //                input: "$_id",
+      //                to: "string"
+      //             }
+      //          }
+      //       }
+      //    },
+      //    //metadata.owner = product._id string
+      //    { 
+      //       $lookup: {
+      //          from: "products-images.files",
+      //          localField: "product_id",
+      //          foreignField: "metadata.owner",
+      //          as: "images"
+      //       }
+      //    },
+      //    { //remove product_id field
+      //       $project:{
+      //          "product_id": 0
+      //       }
+      //    }
+      // ]); 
+      
+      // let products = await cursor.toArray();
+      // console.log(products);
+
+      let products = await db.collection('products').find({}).toArray();
+
+      //create href for each product image
+      for(let i = 0; i < products.length ; i++){
+         if(products[i].images && products[i].images.length > 0){
+            for(let ii = 0; ii < products[i].images.length ; ii++){
+               products[i].images[ii].href 
+                  = `${IMAGES_PRODUCTS_PATH}/${products[i]._id + '_' + products[i].images[ii]._id + products[i].images[ii].ext}`;
             }
          }
-      ]); 
-      
-      let products = await cursor.toArray();
-      console.log(products);
+      }
+
       res.json({ 
          ok:1, 
          resource: products,
@@ -45,7 +58,7 @@ module.exports = product_list = async (req,res,next)=>{
       res.json({
          error: {
             type: 'SERVER_ERROR',
-            text: 'Error Fetching Categories. Contact Administrator.'
+            text: 'Error Fetching Products. Contact Administrator.'
          }
       })
    }

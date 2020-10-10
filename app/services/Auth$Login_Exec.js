@@ -24,7 +24,13 @@ module.exports = async (req,res,next)=>{
     if(foundEmployee){
       // Borrows Employee._id as Authentication's Users user._id
       // let user = { _id: foundEmployee._id ,username: foundEmployee.credential.username };
-      let user = { _id: foundEmployee._id, credential: {username: foundEmployee.userAccount.credential.username, photo: foundEmployee.photo}};
+      let user = { 
+         _id: foundEmployee._id, 
+         credential: {
+             username: foundEmployee.userAccount.credential.username, 
+             photo: foundEmployee.photo
+            }
+         };
       
       req.login(null,user);
     }else{

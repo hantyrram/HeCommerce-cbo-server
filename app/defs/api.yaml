@@ -106,7 +106,7 @@ paths:
        name: _id
        required: true
        description: _id of the Employee
-  /employees/:_id/photo
+  /employees/:_id/photo:
     post:
       summary: Upload a photo of an Employee
       requestBody:

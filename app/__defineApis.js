@@ -33,11 +33,11 @@ module.exports = function(app){
 
       if(apiMiddlewares.length > 0){
          app[service.api.method](apiPath,reqAttachments,apiMiddlewares,service);   
-         console.log(chalk.green(`${new Date} : [APP INIT] ${service.api.method}:/${apiPath} endpoint added.`));
+         // console.log(chalk.green(`${new Date} : [APP INIT] ${service.api.method}:/${apiPath} endpoint added.`));
          continue;
       }
 
       app[service.api.method](apiPath,reqAttachments,service);
-      console.log(chalk.green(`${new Date} : [APP INIT] ${service.api.method}:/${apiPath} endpoint added.`));
+      // console.log(chalk.green(`${new Date} : [APP INIT] ${service.api.method}:/${apiPath} endpoint added.`));
    }
 }

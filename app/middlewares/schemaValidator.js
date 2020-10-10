@@ -81,8 +81,33 @@ module.exports = schemaValidator = (req,res,next)=>{
 }
 
 //schemas = array of {name:'SchemaName', schema:schema}
-module.exports.init = (schemas)=>{
-   forEach()
+module.exports.init = ({schemas}) => {
+   let ajv = new Ajv({
+      allErrors: true,
+      schemas: schemas
+   });
+
+   //validator function, schema to validate against
+   return (schemaId) => {
+      
+      let validate = ajv.getSchema(schemaId);
+      //express middleware
+      return (req,res,next) => {
+         let valid = validate(req.body);
+         if(!valid){
+            
+            return res.status(422).json({
+               error: {
+                  type: "VALIDATION_ERROR",
+                  text: ajv.errorsText(validate.errors)
+               }
+            })
+         }
+         
+         next();
+      }
+
+   }
 }
 /**
  * @typedef {Object} MiddlewareOptions~validateSchemaOptions

@@ -1,0 +1,51 @@
+openapi: 3.0.0
+info:
+  title: HeCommerce API
+  description: Small store API
+  version: 1.0.0
+paths:
+  /login:
+    post:
+      summary: Authenticates a User
+      operationId: Auth$Login_Exec
+      requestBody:
+        content: 
+          application/json:
+            schema:
+              $ref: 'schemas/Credential.json'
+          # required: true
+      responses:
+        '200':
+            description: Login succesful
+            content:
+              application/json:
+                schema:
+                  $ref: '#components/schemas/Credential'         
+components:
+  schemas:
+    Credential:
+      type: object
+      properties:
+        loginID:
+          type: string
+        secret:
+          type: string
+  # /products:
+  #   get:
+  #     summary: Returns list of products
+  #     operationId: Product_List
+  # /products/:productId:
+  #   get:
+  #     summary: Returns a single product
+  #     operationId: Product_List
+      
+  # /logout
+  # /products
+  # /productattributes
+  # /productcategories
+  # /useraccounts
+  # /employees
+  # /employees/useraccounts
+  # /employees/photos
+  # /roles
+  # /settings

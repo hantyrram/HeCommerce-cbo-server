@@ -47,7 +47,11 @@ module.exports = product_edit = async (req,res,next)=>{
       res.json({
          ok,
          resource: updatedProduct,
-         resourceType: 'Product'
+         resourceType: 'Product',
+         message: {
+            type: 'SUCCESS',
+            text: 'Product updated'
+         }
       })
 
    } catch (error) {

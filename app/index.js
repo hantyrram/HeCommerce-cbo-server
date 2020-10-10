@@ -17,13 +17,24 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 const parser = new SwaggerParser();
+// (async function(){
+//    const api = await parser.dereference(path.join(__dirname,'defs/api.yaml'));
+//    console.dir(api);
+// })()
+
 (async function(){
-   const api = await parser.dereference(path.join(__dirname,'defs/api.yaml'));
-   console.dir(api);
+   const api = await parser.dereference(path.join(__dirname,'spec/App.yaml'));
+   // console.dir(api,{depth:null});
+   console.dir(await parser.validate(path.join(__dirname,'spec/App.yaml')),{depth:null});
+   const paths = Object.keys(api.paths);
+   console.log('Paths', paths);
 })()
 
 const __defineGlobals = require('./__defineGlobals');
 __defineGlobals();
+
+global.IMAGES_PRODUCTS_DIR = path.join(__dirname,'../staticdb/images/products');
+global.IMAGES_PRODUCTS_PATH = '/cbo/apiv1/images/products';
 
 const __initParamLoaders = require('./__initParamLoaders');
 const __initAuthentication = require('./__initAuthentication');
@@ -39,6 +50,7 @@ function start(app){
    //where using apiv1 only to catch this on proxy_pass on nginx
    //we should make an entry on nginx for /static instead perhaps point to separate static webserver
    app.use('/cbo/apiv1/static',express.static(path.join(__dirname,'../public')));
+   app.use('/cbo/apiv1/images/products',express.static(path.join(__dirname,'../staticdb/images/products')));
    app.use(express.json());
    app.use(cookieParser());
    app.use(sessionOnRedis({redisClient:dependencyManager.dependencies.redisClient}));

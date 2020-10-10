@@ -1,0 +1,45 @@
+{
+   "$schema":"http://json-schema.org/draft-07/schema",
+   "$id": "ShippingMethod.json",
+   "properties": {
+     "_op": {
+        "$ref": "definitions.json#/definitions/_op"
+     },
+     "_name": {
+        "type":"string",
+        "enum":["FLAT_RATE_SHIPPING","FREE_SHIPPING","LOCAL_PICKUP"]
+     },
+     "title":{
+         "type":"string",
+         "minLength": 4,
+         "maxLength": 50
+     },
+     "cost":{
+         "type":"string",
+         "minLength": 1
+     },
+     "description": {
+        "type":"string",
+        "maxLength": 100
+     }
+  },
+  "allOf": [
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "add"} }
+         },
+         "then": {
+            "required": ["_name","title","cost"]
+         }
+      },
+      {
+         "if" : {
+            "properties": { "_op" : {"const": "edit"} }
+         },
+         "then": {
+            "required": ["_name"]
+         }
+      }
+   ]
+      
+  }

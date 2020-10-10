@@ -47,7 +47,8 @@ module.exports = function(app){
             req.user = {
                userAccount :{
                   credential: {
-                     username: 'devuser_testuser'
+                     username: 'devuser_testuser',
+                     password: 'test'
                   }
                }
             }

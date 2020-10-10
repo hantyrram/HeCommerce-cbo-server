@@ -1,12 +1,11 @@
 
 const {dependencies} = require(`${APP_ROOT}/dependencyManager`);
-
-const GridFSBucket = require('mongodb').GridFSBucket;
-const ObjectId = require('mongodb').ObjectId;
+const path = require('path');
 const fs = require('fs');
-const {PassThrough} = require('stream');
 const multer = require('multer');
-const upload = multer();
+const upload = multer({dest: IMAGES_PRODUCTS_DIR});
+const ObjectId = require('mongodb').ObjectId;
+
 /**
  * @type {HT~service}
  * @func employee_photo_edit
@@ -20,80 +19,69 @@ module.exports = [
    upload.single('productImage'), //req.file = productImage
    
   async (req,res,next)=>{ 
-   let { _id: product_id } = req.params; // employee = _id
-   let { db } = dependencies;
-   let bucket = new GridFSBucket(db,{bucketName: 'products-images'});//??? put bucketName on employee module settings file
 
-   if(!req.file){
-      res.json({
-         error: {
-            type: 'INVALID_FILE_TYPE',
-            text: 'Image is not in acceptable format!'
-         }
-      });
-      return;
-   }
-   
-   //filter
-   let index = (req.file.originalname.toLowerCase().search(/.jpg|.jpeg|.png$/));
+      let { db } = dependencies;
+      const PRODUCT_ID = req.params._id;
+      //filter
+      let index = (req.file.originalname.toLowerCase().search(/.jpg|.jpeg|.png$/));
 
-   if(index === -1){
-      res.json({
-         error: {
-            type: 'INVALID_FILE_TYPE',
-            text: 'Image is not in acceptable format!'
-         }
-      });
-      return;
-   }
-
-   
-   let fileExtension = req.file.originalname.substring(index);
-
-   let fileName = `${product_id}_${Date.now()}${fileExtension}`; ///??? * put on settings
-   
-   // use PassThrough to engulp file buffer and pipe to bucket upload stream
-   let readableStream = new PassThrough();
-
-   readableStream.end(req.file.buffer); 
-
-   readableStream
-      .pipe(bucket.openUploadStream(fileName, { metadata: { owner: product_id, ownerType: 'Product' } }))
-         .on('error',function(error){
-            console.log('Error Saving Photo',error);
-            if(error){
-               res.json({
-                  error: {
-                     type: 'WRITE_FILE_ERROR',
-                     text: 'There was an error saving the image. Contact Administrator.'
-                  }
-               })
-               return;
+      if(index === -1){
+         res.json({
+            error: {
+               type: 'INVALID_FILE_TYPE',
+               text: 'Image is not in acceptable format!'
             }
-            
-            
-         })
-         .on('finish',function(){
-            //add to product.images set
-            (async function(){
-               //query the last added by upload date in desc order,
-               //??? this could result in a race condition on the front end, when multiple users
-               //are adding images on the same product
-               let cursor = await bucket.find({"metadata.owner": product_id}).sort({uploadDate: -1}).limit(1);
-               let images = await cursor.toArray();
-               res.json({
-                  ok:1,
-                  message: {
-                     type: 'SUCCESS',
-                     text: 'Product Image Added'
-                  },
-                  resource: images[0],
-                  resourceType: 'Product.Image'
-               });
-               //return whole product to make it simpler
-            })(); 
-         
          });
+         return;
+      }
+      
+      let fileExtension = req.file.originalname.substring(index);
+    
+      const image_id = new ObjectId();
+
+      const  { mimetype, originalname, filename, size, encoding, fieldname } = req.file;
+
+      const findAndModifyWriteOpResultObject = await db.collection('products').findOneAndUpdate(
+         { _id: ObjectId(req.params._id) },
+         {
+            $addToSet : {
+               images: {
+                  _id: image_id,
+                  filename,
+                  mimetype,
+                  originalname,
+                  size,
+                  encoding,
+                  ext: fileExtension,
+                  product_id: ObjectId(req.params._id)                  
+               }
+            }
+         },
+         {
+            returnOriginal: false
+         }
+      )
+      let oldPath = req.file.path;
+      let newPath = req.file.path.replace(req.file.filename,req.params._id + '_' + image_id + fileExtension);
+
+      fs.renameSync(
+         oldPath,
+         newPath
+      );
+
+      
+      res.json({ok:1,
+         resource: product.images,
+         resourceType: 'Product.Images',
+         message: {
+            type: 'SUCCESS',
+            text: 'Product image added'
+         }
+      })
+      
+      
+      
+   
    }
 ]
 

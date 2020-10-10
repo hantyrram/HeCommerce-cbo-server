@@ -8,27 +8,50 @@ const {PassThrough} = require('stream');
 const multer = require('multer');
 const upload = multer();
 const path = require('path');
+
 /**
- * @type {HT~service}
- * @func employee_add_eid_manual
- * @memberof Services
- * @desc Fetch image as stream, 
+ * Returns a single product image
  */
 
 module.exports = async (req,res,next)=>{ 
+
       let { product_id, _id } = req.params;
-      let { db } = dependencies;
-      let bucket = new GridFSBucket(db, {bucketName: 'products-images'}); 
-      
-      //!!!check if product_id is a valid product _id here,
-      let cursor = await bucket.find({ _id: ObjectId(_id) },{limit: 1}); 
-      if(await cursor.hasNext()){
-         let image = await cursor.next();
-         await bucket.openDownloadStream(image._id).pipe(res);
-         return;
+
+      //check image
+      const product = await dependencies.db.collection('products').findOne(
+         {
+            _id: ObjectId(product_id)
+         },
+         {
+            projection: {
+               images: 1
+            }
+         }
+      )
+
+      let image = (product.images || []).find( image => image._id == _id);
+
+      if(!image){
+         return res.status(400).json({
+            error: {
+               type: 'NOT_FOUND',
+               text: 'Image not found'
+            }
+         })
       }
 
-      res.json({error: {type: 'NOT_FOUND',text: 'Image Not Found'}});
+      const DIR = STATICDB_DIR + `/images/products/${product_id + '_' + _id + image.ext}`;
+      
+      image['href'] = `${IMAGES_PRODUCTS_PATH}/${product_id + '_' + _id + image.ext}`;
+      // let rs = await fs.createReadStream(DIR);
+
+      res.json({
+         ok: 1,
+         resource: image,
+         resourceType: 'Product.Images.Image'
+      })
+      
+
    }
 
 module.exports.api = {
